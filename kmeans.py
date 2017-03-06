@@ -23,19 +23,21 @@ class KMeans(object):
     def cluster(self):
         c1 = []
         c2 = []
-        
         for p in self.points:
-            if self.calculateDistance(p, self.centroids[0]) < self.calculateDistance(p, self.centroids[1]):
+        	d1 = self.calculateDistance(p, self.centroids[0])
+        	d2 = self.calculateDistance(p, self.centroids[1])
+            if d1 < d2:
                 c1.append(p)
             else:
-                c2.append(p)
-                
+                c2.append(p)    
         return c1, c2
     
     def updateCentroids(self):
         c1, c2 = self.cluster()
-        self.centroids = [(np.mean([p[0] for p in c1]), np.mean([p[1] for p in c1])),
-                          (np.mean([p[0] for p in c2]), np.mean([p[1] for p in c2]))]
+        self.centroids = [(np.mean([p[0] for p in c1]), 
+        				   np.mean([p[1] for p in c1])),
+                          (np.mean([p[0] for p in c2]), 
+                           np.mean([p[1] for p in c2]))]
 
 def visualize(title, c1=None, c2=None, centroids=None, centroid=True, clustered=False):
     plt.style.use('ggplot')
@@ -46,15 +48,32 @@ def visualize(title, c1=None, c2=None, centroids=None, centroid=True, clustered=
     sub1.set_yticks(np.arange(0,8,0.5))
     sub1.scatter(A, B, s=100)
     if clustered == True:
-        sub1.scatter(*zip(*c1), c='red', s=100, label='cluster 1')
-        sub1.scatter(*zip(*c2), c='green', s=100, label='cluster 2')
-        sub1.legend(loc='upper left', fontsize=18)
+        sub1.scatter(*zip(*c1), 
+        			 c='red', 
+        			 s=100, 
+        			 label='cluster 1')
+        sub1.scatter(*zip(*c2), 
+        			 c='green', 
+        			 s=100, 
+        			 label='cluster 2')
+        sub1.legend(loc='upper left', 
+        			fontsize=18)
     sub1.set_title(title)
     sub1.set_xlabel('A')
     sub1.set_ylabel('B')
     if centroid == True:
-        sub1.plot(centroids[0][0], centroids[0][1], marker='x', markersize=22, c='black', label='centroid')
-        sub1.plot(centroids[1][0], centroids[1][1], marker='x', markersize=22, c='black', label='centroid')
+        sub1.plot(centroids[0][0], 
+        		  centroids[0][1], 
+        		  marker='x', 
+        		  markersize=22, 
+        		  c='black', 
+        		  label='centroid')
+        sub1.plot(centroids[1][0], 
+        		  centroids[1][1], 
+        		  marker='x', 
+        		  markersize=22, 
+        		  c='black', 
+        		  label='centroid')
         sub2 = plt.subplot(G[0:-1, -1])
         sub2.xaxis.set_visible(False)
         sub2.yaxis.set_visible(False)
